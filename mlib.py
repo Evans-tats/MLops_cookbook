@@ -28,19 +28,19 @@ def load_model(model_path = 'model.joblib'):
             raise FileNotFoundError(f"Model file {model_path} does not exist.")
         clf = joblib.load(model_path)
         MODEL_CACHE[model_path] = clf
-        logger.info(f"Model loaded from {model_path}")
+        logger.info(f"Model loaded from %s", model_path)
         return clf
     except Exception as e:
         logger.exception("Error loading model")
         raise RuntimeWarning(f"Failed to load model from {model_path}: {e}")
-    clf = joblib.load(model)
+    clf = joblib.load(model_path)
     return clf
 
 def data(data_path = 'htwtmlb.csv'):
     df = pd.read_csv(data_path)
     if df.empty:
         raise ValueError("DataFrame is empty. Please check the data file.")
-    logger.info(f"Data loaded from {data_path} with shape {df.shape}")
+    logger.info(f"Data loaded from %s with shape %s", data_path, df.shape)
     return df
 
 def retrain(t_size=0.1, model_path="model.joblib"):
@@ -59,14 +59,14 @@ def retrain(t_size=0.1, model_path="model.joblib"):
     clf = Ridge(alpha=1.0)
     model = clf.fit(x_train, y_train)
     accuracy = model.score(x_test, y_test)
-    logger.info(f"Model retrained with accuracy: {accuracy}")
+    logger.info(f"Model retrained with accuracy: %s",accuracy)
     
     joblib.dump(model, model_path)
     #joblib.dump(x_scaler, "x_scaler.joblib")
     #joblib.dump(y_scaler, "y_scaler.joblib")
 
     MODEL_CACHE[model_path] = model
-    logger.info(f"Model saved to {model_path}")
+    logger.info(f"Model saved to %s",model_path)
     return model_path, accuracy 
 
 def format_input(weight):
@@ -94,7 +94,7 @@ def scale_target(value):
     target = df["Height"].values.reshape(-1, 1)
     target_scaler = StandardScaler().fit(target)
     scaled_target = target_scaler.inverse_transform(value)
-    logger.info(f"Scaled target: {scaled_target}")
+    logger.info(f"Scaled target: %s",scaled_target)
     return scaled_target
 
 def height_human(float_inches):
@@ -114,7 +114,7 @@ def human_readable_payload(predict_value):
         "height_readable": height_human(height_inches)
     }
 
-    logger.info(f"Human-readable payload: {results}")
+    logger.info(f"Human-readable payload: %s",results)
     return results
 
 def predict(weight):
@@ -131,7 +131,7 @@ def predict(weight):
 
     payload = human_readable_payload(height_prediction)
     
-    logger.info(f"Prediction made for weight {weight}: {payload}")
+    logger.info(f"Prediction made for weight %s: %s", weight,payload)
     return payload
 def main():
     """Main function to run the module"""
