@@ -16,7 +16,7 @@ jobs:
         with:
           registry: ghrc.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GIT_HUB_REGISTRY }}
+          password: ${{ secrets.GIT_REGISTRY }}
 
       - name: build flask-app container and oush to registry
         uses: docker/build-push-action@v5
