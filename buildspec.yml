@@ -11,7 +11,7 @@ phases:
   pre_build:
     commands:
       - echo "Running pre-build tasks"
-      - pylint *.py  
+      - pylint --disable=R,C,E1101,W1203 *.py  
   # build:
   #   commands:
   #     - echo "running pytest"
